@@ -1,6 +1,6 @@
 {
   "name": "micromark-extension-frontmatter",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "micromark extension to support frontmatter (YAML, TOML, etc)",
   "license": "MIT",
   "keywords": [
