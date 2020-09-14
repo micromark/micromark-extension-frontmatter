@@ -14,8 +14,8 @@ This package provides the low-level modules for integrating with the micromark
 tokenizer and the micromark HTML compiler.
 
 As there is no spec for frontmatter in markdown, this extension follows how YAML
-frontmatter works in markdown on GitHub (🧊).
-For the HTML part, instead of rendering YAML it is ignored.
+frontmatter works on GitHub (🧊).
+For the HTML part, instead of rendering YAML, it is ignored.
 Other types of frontmatter can be parsed, which will by default also work the
 same as on GitHub (🧊).
 
@@ -33,19 +33,19 @@ npm install micromark-extension-frontmatter
 
 ## API
 
-### `syntax(options)`
-
 ### `html(options)`
 
-> Note: `syntax` is the default export of this module, html is available at
+### `syntax(options)`
+
+> Note: `syntax` is the default export of this module, `html` is available at
 > `micromark-extension-frontmatter/html`.
 
 Support frontmatter (YAML, TOML, and more).
-These functions can be called with options and return extensions, respectively
-for the micromark parser, and the html default compiler.
-The syntax extension, which takes care of parsing the described frontmatter, can
-be passed in `extensions`; the HTML extension, which takes care of ignoring said
-frontmatter, in `htmlExtensions`.
+
+The exports are functions that can be called with options and return extensions,
+respectively for the micromark parser (to tokenize frontmatter; can be passed in
+`extensions`) and the default HTML compiler (to ignore frontmatter; can be
+passed in `htmlExtensions`).
 
 ##### `options`
 
