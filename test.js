@@ -188,13 +188,21 @@ test('markdown -> html (micromark)', function (t) {
     'should support blank lines in yaml'
   )
 
+  var customOptions = {
+    extensions: [syntax(custom)],
+    htmlExtensions: [html(custom)]
+  }
+
   t.deepEqual(
-    micromark('<<<\na\n\nb\n>>>', {
-      extensions: [syntax(custom)],
-      htmlExtensions: [html(custom)]
-    }),
+    micromark('<<<\na\n\nb\n>>>', customOptions),
     '',
     'should support a custom matter (1)'
+  )
+
+  t.deepEqual(
+    micromark('<<<\na\n\nb\n>>>', customOptions),
+    '',
+    'should support a custom matter (2)'
   )
 
   t.deepEqual(
@@ -203,7 +211,7 @@ test('markdown -> html (micromark)', function (t) {
       htmlExtensions: [html(json)]
     }),
     '',
-    'should support a custom matter (2)'
+    'should support a custom matter (3)'
   )
 
   t.deepEqual(
