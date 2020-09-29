@@ -6,6 +6,7 @@ var html = require('./html')
 var custom = {type: 'custom', marker: {open: '<', close: '>'}}
 var json = {type: 'json', fence: {open: '{', close: '}'}}
 var yamlAnywhere = {type: 'yaml', marker: '-', anywhere: true}
+var customAndYaml = [{type: 'custom', marker: {open: '-', close: '.'}}, 'yaml']
 
 test('core', function (t) {
   t.throws(
@@ -229,6 +230,15 @@ test('markdown -> html (micromark)', function (t) {
       htmlExtensions: [html(yamlAnywhere)]
     }),
     '<h1>Hello</h1>\n<p>+++</p>',
+    'should not support custom matters in the middle'
+  )
+
+  t.deepEqual(
+    micromark('---\nasd\n...', {
+      extensions: [syntax(customAndYaml)],
+      htmlExtensions: [html(customAndYaml)]
+    }),
+    '',
     'should not support custom matters in the middle'
   )
 
