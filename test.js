@@ -230,7 +230,16 @@ test('markdown -> html (micromark)', function (t) {
       htmlExtensions: [html(yamlAnywhere)]
     }),
     '<h1>Hello</h1>\n<p>+++</p>',
-    'should not support custom matters in the middle'
+    'should support custom matters anywhere'
+  )
+
+  t.deepEqual(
+    micromark('a\n---\nb\n---', {
+      extensions: [syntax(yamlAnywhere)],
+      htmlExtensions: [html(yamlAnywhere)]
+    }),
+    '<p>a</p>\n',
+    'should prefer anywhere matter that could also be seen as headings (setext)'
   )
 
   t.deepEqual(
@@ -239,7 +248,7 @@ test('markdown -> html (micromark)', function (t) {
       htmlExtensions: [html(customAndYaml)]
     }),
     '',
-    'should not support custom matters in the middle'
+    'should support two matters w/ the same start, but different ends'
   )
 
   t.end()
