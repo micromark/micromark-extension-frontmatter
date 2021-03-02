@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015"],
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "micromark-extension-frontmatter": ["index.d.ts"],
+      "micromark-extension-frontmatter/*": ["*"]
+    }
+  }
+}
