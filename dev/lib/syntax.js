@@ -1,3 +1,6 @@
+import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
+import {codes} from 'micromark-util-symbol/codes.js'
+import {types} from 'micromark-util-symbol/types.js'
 import {matters} from './matters.js'
 
 export function frontmatter(options) {
@@ -54,7 +57,7 @@ function parse(matter) {
     }
 
     function lineStart(code) {
-      if (code === -5 || code === -4 || code === -3 || code === null) {
+      if (code === codes.eof || markdownLineEnding(code)) {
         return lineEnd(code)
       }
 
@@ -63,7 +66,7 @@ function parse(matter) {
     }
 
     function lineData(code) {
-      if (code === -5 || code === -4 || code === -3 || code === null) {
+      if (code === codes.eof || markdownLineEnding(code)) {
         effects.exit(valueType)
         return lineEnd(code)
       }
@@ -74,14 +77,14 @@ function parse(matter) {
 
     function lineEnd(code) {
       // Require a closing fence.
-      if (code === null) {
+      if (code === codes.eof) {
         return nok(code)
       }
 
       // Can only be an eol.
-      effects.enter('lineEnding')
+      effects.enter(types.lineEnding)
       effects.consume(code)
-      effects.exit('lineEnding')
+      effects.exit(types.lineEnding)
       return effects.attempt(fenceConstruct, after, lineStart)
     }
 
@@ -110,8 +113,8 @@ function parse(matter) {
       if (bufferIndex === buffer.length) {
         effects.exit(sequenceType)
 
-        if (code === -2 || code === -1 || code === 32) {
-          effects.enter('whitespace')
+        if (markdownSpace(code)) {
+          effects.enter(types.whitespace)
           return insideWhitespace(code)
         }
 
@@ -128,17 +131,17 @@ function parse(matter) {
     }
 
     function insideWhitespace(code) {
-      if (code === -2 || code === -1 || code === 32) {
+      if (markdownSpace(code)) {
         effects.consume(code)
         return insideWhitespace
       }
 
-      effects.exit('whitespace')
+      effects.exit(types.whitespace)
       return fenceEnd(code)
     }
 
     function fenceEnd(code) {
-      if (code === -5 || code === -4 || code === -3 || code === null) {
+      if (code === codes.eof || markdownLineEnding(code)) {
         effects.exit(fenceType)
         return ok(code)
       }

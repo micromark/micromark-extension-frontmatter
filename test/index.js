@@ -1,6 +1,6 @@
 import test from 'tape'
 import {micromark} from 'micromark'
-import {frontmatter as syntax, frontmatterHtml as html} from '../index.js'
+import {frontmatter as syntax, frontmatterHtml as html} from '../dev/index.js'
 
 const custom = {type: 'custom', marker: {open: '<', close: '>'}}
 const json = {type: 'json', fence: {open: '{', close: '}'}}
