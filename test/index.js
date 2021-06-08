@@ -2,14 +2,17 @@ import test from 'tape'
 import {micromark} from 'micromark'
 import {frontmatter as syntax, frontmatterHtml as html} from '../index.js'
 
-var custom = {type: 'custom', marker: {open: '<', close: '>'}}
-var json = {type: 'json', fence: {open: '{', close: '}'}}
-var yamlAnywhere = {type: 'yaml', marker: '-', anywhere: true}
-var customAndYaml = [{type: 'custom', marker: {open: '-', close: '.'}}, 'yaml']
+const custom = {type: 'custom', marker: {open: '<', close: '>'}}
+const json = {type: 'json', fence: {open: '{', close: '}'}}
+const yamlAnywhere = {type: 'yaml', marker: '-', anywhere: true}
+const customAndYaml = [
+  {type: 'custom', marker: {open: '-', close: '.'}},
+  'yaml'
+]
 
-test('core', function (t) {
+test('core', (t) => {
   t.throws(
-    function () {
+    () => {
       syntax([1])
     },
     /^Error: Expected matter to be an object, not `1`/,
@@ -17,7 +20,7 @@ test('core', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       syntax('jsonml')
     },
     /^Error: Missing matter definition for `jsonml`/,
@@ -25,7 +28,7 @@ test('core', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       syntax({marker: '*'})
     },
     /^Error: Missing `type` in matter `{"marker":"\*"}`/,
@@ -33,7 +36,7 @@ test('core', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       syntax({type: 'jsonml'})
     },
     /^Error: Missing `marker` or `fence` in matter `{"type":"jsonml"}`/,
@@ -43,7 +46,7 @@ test('core', function (t) {
   t.end()
 })
 
-test('markdown -> html (micromark)', function (t) {
+test('markdown -> html (micromark)', (t) => {
   t.deepEqual(
     micromark('---', {
       extensions: [syntax()],
@@ -188,7 +191,7 @@ test('markdown -> html (micromark)', function (t) {
     'should support blank lines in yaml'
   )
 
-  var customOptions = {
+  const customOptions = {
     extensions: [syntax(custom)],
     htmlExtensions: [html(custom)]
   }
