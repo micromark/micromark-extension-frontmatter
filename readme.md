@@ -74,8 +74,8 @@ An object with a `type` and either a `marker` or a `fence`:
     — Type to tokenize as
 *   `marker` (`string` or `{open: string, close: string}`)
     — Character used to construct fences.
-    By providing an object with `open` and `close`.
-    different characters can be used for opening and closing fences.
+    By providing an object with `open` and `close` different characters can be
+    used for opening and closing fences.
     For example the character `'-'` will result in `'---'` being used as the
     fence
 *   `fence` (`string` or `{open: string, close: string}`)

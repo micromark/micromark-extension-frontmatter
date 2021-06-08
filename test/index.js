@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('../dev/lib/matters.js').Options} Options
+ */
+
 import test from 'tape'
 import {micromark} from 'micromark'
 import {frontmatter as syntax, frontmatterHtml as html} from '../dev/index.js'
@@ -5,6 +9,7 @@ import {frontmatter as syntax, frontmatterHtml as html} from '../dev/index.js'
 const custom = {type: 'custom', marker: {open: '<', close: '>'}}
 const json = {type: 'json', fence: {open: '{', close: '}'}}
 const yamlAnywhere = {type: 'yaml', marker: '-', anywhere: true}
+/** @type {Options} */
 const customAndYaml = [
   {type: 'custom', marker: {open: '-', close: '.'}},
   'yaml'
@@ -13,6 +18,7 @@ const customAndYaml = [
 test('core', (t) => {
   t.throws(
     () => {
+      // @ts-expect-error: runtime.
       syntax([1])
     },
     /^Error: Expected matter to be an object, not `1`/,
@@ -21,6 +27,7 @@ test('core', (t) => {
 
   t.throws(
     () => {
+      // @ts-expect-error: runtime.
       syntax('jsonml')
     },
     /^Error: Missing matter definition for `jsonml`/,
@@ -29,6 +36,7 @@ test('core', (t) => {
 
   t.throws(
     () => {
+      // @ts-expect-error: runtime.
       syntax({marker: '*'})
     },
     /^Error: Missing `type` in matter `{"marker":"\*"}`/,
@@ -37,6 +45,7 @@ test('core', (t) => {
 
   t.throws(
     () => {
+      // @ts-expect-error: runtime.
       syntax({type: 'jsonml'})
     },
     /^Error: Missing `marker` or `fence` in matter `{"type":"jsonml"}`/,
