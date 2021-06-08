@@ -1,7 +1,7 @@
 var test = require('tape')
 var micromark = require('micromark')
-var syntax = require('.')
-var html = require('./html')
+var syntax = require('./index.js')
+var html = require('./html.js')
 
 var custom = {type: 'custom', marker: {open: '<', close: '>'}}
 var json = {type: 'json', fence: {open: '{', close: '}'}}
