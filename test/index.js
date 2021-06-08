@@ -1,7 +1,6 @@
-var test = require('tape')
-var micromark = require('micromark')
-var syntax = require('./index.js')
-var html = require('./html.js')
+import test from 'tape'
+import {micromark} from 'micromark'
+import {frontmatter as syntax, frontmatterHtml as html} from '../index.js'
 
 var custom = {type: 'custom', marker: {open: '<', close: '>'}}
 var json = {type: 'json', fence: {open: '{', close: '}'}}
