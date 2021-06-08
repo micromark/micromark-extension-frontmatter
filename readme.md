@@ -19,9 +19,12 @@ same as on github.com.
 This package provides the low-level modules for integrating with the micromark
 tokenizer and the micromark HTML compiler.
 
-You probably shouldn’t use this package directly, but instead use
-[`mdast-util-frontmatter`][mdast-util-frontmatter] with **[mdast][]** or
-[`remark-frontmatter`][remark-frontmatter] with **[remark][]**.
+## When to use this
+
+If you’re using [`micromark`][micromark] or
+[`mdast-util-from-markdown`][from-markdown], use this package.
+Alternatively, if you’re using **[remark][]**, use
+[`remark-frontmatter`][remark-frontmatter].
 
 ## Install
 
@@ -34,25 +37,49 @@ Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
 npm install micromark-extension-frontmatter
 ```
 
+## Use
+
+```js
+import {micromark} from 'micromark'
+import {frontmatter, frontmatterHtml} from 'micromark-extension-frontmatter'
+
+const output = micromark('---\na: b\n---\n# c', {
+  extensions: [frontmatter()],
+  htmlExtensions: [frontmatterHtml()]
+})
+
+console.log(output)
+```
+
+Yields:
+
+```html
+<h1>c</h1>
+```
+
 ## API
 
 This package exports the following identifiers: `frontmatter`,
 `frontmatterHtml`.
 There is no default export.
 
-### `frontmatterHtml(options?)`
+The export map supports the endorsed
+[`development` condition](https://nodejs.org/api/packages.html#packages_resolving_user_conditions).
+Run `node --conditions development module.js` to get instrumented dev code.
+Without this condition, production code is loaded.
 
 ### `frontmatter(options?)`
+
+### `frontmatterHtml(options?)`
 
 > Note: `syntax` is the default export of this module, `html` is available at
 > `micromark-extension-frontmatter/html`.
 
 Support frontmatter (YAML, TOML, and more).
 
-The exports are functions that can be called with options and return extensions
-for the micromark parser (to tokenize frontmatter; can be passed in
-`extensions`) and the default HTML compiler (to ignore frontmatter; can be
-passed in `htmlExtensions`).
+Two functions that can be called with options to get an extension for micromark
+to parse frontmatter (can be passed in `extensions`) and one to compile (ignore)
+them (can be passed in `htmlExtensions`).
 
 ##### `options`
 
@@ -126,10 +153,10 @@ For `{type: 'json', fence: {open: '{', close: '}'}}`:
 
 *   [`remarkjs/remark`][remark]
     — markdown processor powered by plugins
+*   [`remarkjs/remark-frontmatter`][remark-frontmatter]
+    — remark plugin using this to support frontmatter
 *   [`micromark/micromark`][micromark]
     — the smallest commonmark-compliant markdown parser that exists
-*   [`remarkjs/remark-frontmatter`][remark-frontmatter]
-    — remark plugin to support frontmatter
 *   [`syntax-tree/mdast-util-frontmatter`][mdast-util-frontmatter]
     — mdast utility to support frontmatter
 *   [`syntax-tree/mdast-util-from-markdown`][from-markdown]
@@ -198,8 +225,6 @@ abide by its terms.
 [to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
 [remark]: https://github.com/remarkjs/remark
-
-[mdast]: https://github.com/syntax-tree/mdast
 
 [mdast-util-frontmatter]: https://github.com/syntax-tree/mdast-util-frontmatter
 
