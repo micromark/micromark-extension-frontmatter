@@ -262,5 +262,29 @@ test('markdown -> html (micromark)', (t) => {
     'should support two matters w/ the same start, but different ends'
   )
 
+  t.deepEqual(
+    micromark('---\nasd', {extensions: [syntax()], htmlExtensions: [html()]}),
+    '<hr />\n<p>asd</p>',
+    'should not support frontmatter w/o closing'
+  )
+
+  t.deepEqual(
+    micromark('* ---\n  asd\n  ---', {
+      extensions: [syntax()],
+      htmlExtensions: [html()]
+    }),
+    '<ul>\n<li>\n<hr />\n<h2>asd</h2>\n</li>\n</ul>',
+    'should not support frontmatter in a container (list)'
+  )
+
+  t.deepEqual(
+    micromark('> ---\n  asd\n  ---', {
+      extensions: [syntax()],
+      htmlExtensions: [html()]
+    }),
+    '<blockquote>\n<hr />\n</blockquote>\n<h2>asd</h2>',
+    'should not support frontmatter in a container (block quote)'
+  )
+
   t.end()
 })
