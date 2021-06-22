@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../dev/lib/matters.js').Options} Options
+ * @typedef {import('../dev/matters.js').Options} Options
  */
 
 import test from 'tape'

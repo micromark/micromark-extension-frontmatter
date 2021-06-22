@@ -1,10 +1,10 @@
 /**
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  * @typedef {import('micromark-util-types').Handle} Handle
- * @typedef {import('./matters.js').Options} Options
+ * @typedef {import('../matters.js').Options} Options
  */
 
-import {matters} from './matters.js'
+import {matters} from '../matters.js'
 
 /**
  * Create an extension to support frontmatter (YAML, TOML, and more).

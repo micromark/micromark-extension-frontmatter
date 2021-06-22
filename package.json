@@ -30,12 +30,24 @@
   "files": [
     "dev/",
     "lib/",
+    "matters.d.ts",
+    "matters.js",
     "index.d.ts",
     "index.js"
   ],
   "exports": {
-    "development": "./dev/index.js",
-    "default": "./index.js"
+    ".": {
+      "development": "./dev/index.js",
+      "default": "./index.js"
+    },
+    "./matters": {
+      "development": "./dev/matters.js",
+      "default": "./matters.js"
+    },
+    "./matters.js": {
+      "development": "./dev/matters.js",
+      "default": "./matters.js"
+    }
   },
   "dependencies": {
     "fault": "^2.0.0",

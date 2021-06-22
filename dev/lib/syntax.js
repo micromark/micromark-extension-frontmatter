@@ -4,15 +4,15 @@
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  * @typedef {import('micromark-util-types').State} State
- * @typedef {import('./matters.js').Options} Options
- * @typedef {import('./matters.js').Matter} Matter
- * @typedef {import('./matters.js').Info} Info
+ * @typedef {import('../matters.js').Options} Options
+ * @typedef {import('../matters.js').Matter} Matter
+ * @typedef {import('../matters.js').Info} Info
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
-import {matters} from './matters.js'
+import {matters} from '../matters.js'
 
 /**
  * Create an extension to support frontmatter (YAML, TOML, and more).
