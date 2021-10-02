@@ -25,14 +25,10 @@ export function frontmatter(options) {
   /** @type {ConstructRecord} */
   const flow = {}
   let index = -1
-  /** @type {Matter} */
-  let matter
-  /** @type {number} */
-  let code
 
   while (++index < settings.length) {
-    matter = settings[index]
-    code = fence(matter, 'open').charCodeAt(0)
+    const matter = settings[index]
+    const code = fence(matter, 'open').charCodeAt(0)
     if (code in flow) {
       // @ts-expect-error it clearly does exist.
       flow[code].push(parse(matter))
