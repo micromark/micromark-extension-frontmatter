@@ -8,7 +8,32 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-**[micromark][]** extension to support frontmatter (YAML, TOML, etc).
+[micromark][] extension to support frontmatter (YAML, TOML, etc).
+
+## Contents
+
+*   [What is this?](#what-is-this)
+*   [When to use this](#when-to-use-this)
+*   [Install](#install)
+*   [Use](#use)
+*   [API](#api)
+    *   [`frontmatter(options?)`](#frontmatteroptions)
+    *   [`frontmatterHtml(options?)`](#frontmatterhtmloptions)
+*   [Examples](#examples)
+*   [Authoring](#authoring)
+*   [HTML](#html)
+*   [CSS](#css)
+*   [Syntax](#syntax)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
+*   [Security](#security)
+*   [Related](#related)
+*   [Contribute](#contribute)
+*   [License](#license)
+
+## What is this?
+
+This package contains extensions that add support for frontmatter.
 
 As there is no spec for frontmatter in markdown, this extension follows how YAML
 frontmatter works on github.com.
@@ -16,25 +41,37 @@ For the HTML part, instead of rendering YAML, it is ignored.
 Other types of frontmatter can be parsed, which will by default also work the
 same as on github.com.
 
-This package provides the low-level modules for integrating with the micromark
-tokenizer and the micromark HTML compiler.
-
 ## When to use this
 
-If you’re using [`micromark`][micromark] or
-[`mdast-util-from-markdown`][from-markdown], use this package.
-Alternatively, if you’re using **[remark][]**, use
-[`remark-frontmatter`][remark-frontmatter].
+These tools are all low-level.
+In many cases, you want to use [`remark-frontmatter`][plugin] with remark
+instead.
+
+When you do want to use `micromark`, you can use this.
+When working with `mdast-util-from-markdown`, you must combine this package
+with [`mdast-util-frontmatter`][util].
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
-Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
-
-[npm][]:
+This package is [ESM only][esm].
+In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
 
 ```sh
 npm install micromark-extension-frontmatter
+```
+
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import {frontmatter, frontmatterHtml} from 'https://esm.sh/micromark-extension-frontmatter@1'
+```
+
+In browsers with [`esm.sh`][esmsh]:
+
+```html
+<script type="module">
+  import {frontmatter, frontmatterHtml} from 'https://esm.sh/micromark-extension-frontmatter@1?bundle'
+</script>
 ```
 
 ## Use
@@ -59,29 +96,26 @@ Yields:
 
 ## API
 
-This package exports the following identifiers: `frontmatter`,
-`frontmatterHtml`.
+This package exports the identifiers `frontmatter` and `frontmatterHtml`.
 There is no default export.
 
-The export map supports the endorsed
-[`development` condition](https://nodejs.org/api/packages.html#packages_resolving_user_conditions).
+The export map supports the endorsed [`development` condition][condition].
 Run `node --conditions development module.js` to get instrumented dev code.
 Without this condition, production code is loaded.
 
 ### `frontmatter(options?)`
 
-### `frontmatterHtml(options?)`
+Add support for parsing frontmatter in markdown.
 
-> Note: `syntax` is the default export of this module, `html` is available at
-> `micromark-extension-frontmatter/html`.
+Function that can be called to get a syntax extension for micromark (passed
+in `extensions`).
 
-Support frontmatter (YAML, TOML, and more).
-
-Two functions that can be called with options to get an extension for micromark
-to parse frontmatter (can be passed in `extensions`) and one to compile (ignore)
-them (can be passed in `htmlExtensions`).
+Supports YAML by default.
+Can be configured to support TOML and more.
 
 ##### `options`
+
+Configuration (optional).
 
 One [`preset`][preset] or [`Matter`][matter], or an array of them, defining all
 the supported frontmatters (default: `'yaml'`).
@@ -90,23 +124,23 @@ the supported frontmatters (default: `'yaml'`).
 
 Either `'yaml'` or `'toml'`:
 
-*   `'yaml'` — [`matter`][matter] defined as `{type: 'yaml', marker: '-'}`
-*   `'toml'` — [`matter`][matter] defined as `{type: 'toml', marker: '+'}`
+*   `'yaml'` — [`Matter`][matter] defined as `{type: 'yaml', marker: '-'}`
+*   `'toml'` — [`Matter`][matter] defined as `{type: 'toml', marker: '+'}`
 
 ##### `Matter`
 
 An object with a `type` and either a `marker` or a `fence`:
 
 *   `type` (`string`)
-    — Type to tokenize as
+    — type to tokenize as
 *   `marker` (`string` or `{open: string, close: string}`)
-    — Character used to construct fences.
+    — character used to construct fences.
     By providing an object with `open` and `close` different characters can be
     used for opening and closing fences.
     For example the character `'-'` will result in `'---'` being used as the
     fence
 *   `fence` (`string` or `{open: string, close: string}`)
-    — String used as the complete fence.
+    — string used as the complete fence.
     By providing an object with `open` and `close` different values can be used
     for opening and closing fences.
     This can be used too if fences contain different characters or lengths other
@@ -115,9 +149,27 @@ An object with a `type` and either a `marker` or a `fence`:
     – if `true`, matter can be found anywhere in the document.
     If `false` (default), only matter at the start of the document is recognized
 
-###### Example
+### `frontmatterHtml(options?)`
 
-For `{type: 'yaml', marker: '-'}`:
+Add support for turning frontmatter in markdown to HTML.
+
+Function that can be called to get an HTML extension for micromark (passed
+in `htmlExtensions`).
+
+This makes sure nothing is generated for frontmatter.
+
+Supports YAML by default.
+Can be configured to support other things.
+
+See `options` above for more info.
+
+## Examples
+
+Here are a couple of example of different matter objects and what frontmatter
+they match.
+
+To match frontmatter with the same opening and closing fence, namely three of
+the same markers, use for example `{type: 'yaml', marker: '-'}`, which matches:
 
 ```yaml
 ---
@@ -125,7 +177,9 @@ key: value
 ---
 ```
 
-For `{type: 'custom', marker: {open: '<', close: '>'}}`:
+To match frontmatter with different opening and closing fences, which each use
+three different markers, use for example
+`{type: 'custom', marker: {open: '<', close: '>'}}`, which matches:
 
 ```text
 <<<
@@ -133,7 +187,9 @@ data
 >>>
 ```
 
-For `{type: 'custom', fence: '+=+=+=+'}`:
+To match frontmatter with the same opening and closing fences, which both use
+the same custom string, use for example `{type: 'custom', fence: '+=+=+=+'}`,
+which matches:
 
 ```text
 +=+=+=+
@@ -141,7 +197,9 @@ data
 +=+=+=+
 ```
 
-For `{type: 'json', fence: {open: '{', close: '}'}}`:
+To match frontmatter with different opening and closing fences, which each use
+different custom strings, use for example
+`{type: 'json', fence: {open: '{', close: '}'}}`, which matches:
 
 ```json
 {
@@ -149,20 +207,59 @@ For `{type: 'json', fence: {open: '{', close: '}'}}`:
 }
 ```
 
+## Authoring
+
+When authoring markdown with frontmatter, it’s recommended to use YAML
+frontmatter if possible.
+While YAML has some warts, it works in the most places, so using it guarantees
+the highest chance of portability.
+
+In certain ecosystems, other flavors are widely used.
+For example, in the Rust ecosystem, TOML is often used.
+In such cases, using TOML is an okay choice.
+
+When possible, do not use other types of frontmatter, and do not allow
+frontmatter anywhere.
+
+## HTML
+
+Frontmatter does not relate to HTML elements.
+It is typically stripped, which is what this plugin does.
+
+## CSS
+
+This package does not relate to CSS.
+
+## Syntax
+
+Frontmatter form with, roughly, the following BNF:
+
+```bnf
+; Note: `fence` is an arbitrary, configured, fence.
+frontmatter ::= fence *space_or_tab eol *( *code eol ) fence *space_or_tab
+```
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports the additional type `Options`.
+
+## Compatibility
+
+This package is at least compatible with all maintained versions of Node.js.
+As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+It also works in Deno and modern browsers.
+
+## Security
+
+This package is safe.
+
 ## Related
 
-*   [`remarkjs/remark`][remark]
-    — markdown processor powered by plugins
-*   [`remarkjs/remark-frontmatter`][remark-frontmatter]
+*   [`remarkjs/remark-frontmatter`][plugin]
     — remark plugin using this to support frontmatter
-*   [`micromark/micromark`][micromark]
-    — the smallest commonmark-compliant markdown parser that exists
-*   [`syntax-tree/mdast-util-frontmatter`][mdast-util-frontmatter]
+*   [`syntax-tree/mdast-util-frontmatter`][util]
     — mdast utility to support frontmatter
-*   [`syntax-tree/mdast-util-from-markdown`][from-markdown]
-    — mdast parser using `micromark` to create mdast from markdown
-*   [`syntax-tree/mdast-util-to-markdown`][to-markdown]
-    — mdast serializer to create markdown from mdast
 
 ## Contribute
 
@@ -208,27 +305,29 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esmsh]: https://esm.sh
+
 [license]: license
 
 [author]: https://wooorm.com
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[typescript]: https://www.typescriptlang.org
+
+[condition]: https://nodejs.org/api/packages.html#packages_resolving_user_conditions
 
 [micromark]: https://github.com/micromark/micromark
 
-[from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+[util]: https://github.com/syntax-tree/mdast-util-frontmatter
 
-[to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
-
-[remark]: https://github.com/remarkjs/remark
-
-[mdast-util-frontmatter]: https://github.com/syntax-tree/mdast-util-frontmatter
-
-[remark-frontmatter]: https://github.com/remarkjs/remark-frontmatter
+[plugin]: https://github.com/remarkjs/remark-frontmatter
 
 [preset]: #preset
 
