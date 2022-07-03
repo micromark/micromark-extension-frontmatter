@@ -1,6 +1,6 @@
 /**
  * @typedef {'yaml'|'toml'} Preset
- *   Either `'yaml'` or `'toml'`
+ *   Either `'yaml'` or `'toml'`.
  *
  * @typedef Info
  * @property {string} open
@@ -8,13 +8,14 @@
  *
  * @typedef MatterProps
  * @property {string} type
- *   Type to tokenize as
+ *   Type to tokenize as.
  * @property {boolean} [anywhere=false]
  *   If `true`, matter can be found anywhere in the document.
  *   If `false` (default), only matter at the start of the document is
  *   recognized.
  *
  * @typedef MarkerProps
+ *   Marker configuration.
  * @property {string|Info} marker
  *   Character used to construct fences.
  *   By providing an object with `open` and `close` different characters can be
@@ -22,8 +23,10 @@
  *   For example the character `'-'` will result in `'---'` being used as the
  *   fence
  * @property {never} [fence]
+ *   If `marker` is set, `fence` must not be set.
  *
  * @typedef FenceProps
+ *   Fence configuration.
  * @property {string|Info} fence
  *   String used as the complete fence.
  *   By providing an object with `open` and `close` different values can be used
@@ -31,10 +34,13 @@
  *   This can be used too if fences contain different characters or lengths
  *   other than 3.
  * @property {never} [marker]
+ *   If `fence` is set, `marker` must not be set.
  *
  * @typedef {(MatterProps & FenceProps)|(MatterProps & MarkerProps)} Matter
+ *   Matter object describing frontmatter.
  *
- * @typedef {Preset|Matter|Array.<Preset|Matter>} Options
+ * @typedef {Preset|Matter|Array<Preset|Matter>} Options
+ *   Matter object or preset, or many.
  */
 
 import {fault} from 'fault'

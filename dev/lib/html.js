@@ -7,10 +7,20 @@
 import {matters} from '../matters.js'
 
 /**
- * Create an extension to support frontmatter (YAML, TOML, and more).
+ * Add support for turning frontmatter in markdown to HTML.
  *
- * @param {Options} [options='yaml'] One preset or matter, or an array of them.
+ * Function that can be called to get an HTML extension for micromark (passed
+ * in `htmlExtensions`).
+ *
+ * This makes sure nothing is generated for frontmatter.
+ *
+ * Supports YAML by default.
+ * Can be configured to support other things.
+ *
+ * @param {Options} [options='yaml']
+ *   Configuration (optional).
  * @returns {HtmlExtension}
+ *   HTML extension for micromark (passed in `htmlExtensions`).
  */
 export function frontmatterHtml(options) {
   const settings = matters(options)
