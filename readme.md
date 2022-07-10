@@ -232,7 +232,7 @@ This package does not relate to CSS.
 
 ## Syntax
 
-Frontmatter form with, roughly, the following BNF:
+Frontmatter forms with, roughly, the following BNF:
 
 ```bnf
 ; Note: `fence` is an arbitrary, configured, fence.
