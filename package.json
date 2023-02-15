@@ -52,7 +52,8 @@
   "dependencies": {
     "fault": "^2.0.0",
     "micromark-util-character": "^1.0.0",
-    "micromark-util-symbol": "^1.0.0"
+    "micromark-util-symbol": "^1.0.0",
+    "micromark-util-types": "^1.0.0"
   },
   "devDependencies": {
     "@types/tape": "^4.0.0",
