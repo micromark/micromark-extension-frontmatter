@@ -3,6 +3,7 @@
  * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('../matters.js').Options} Options
  * @typedef {import('../matters.js').Matter} Matter
@@ -64,7 +65,10 @@ function parse(matter) {
 
   return {tokenize: tokenizeFrontmatter, concrete: true}
 
-  /** @type {Tokenizer} */
+  /**
+   * @this {TokenizeContext}
+   * @type {Tokenizer}
+   */
   function tokenizeFrontmatter(effects, ok, nok) {
     const self = this
 
