@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  * @typedef {import('micromark-util-types').Handle} Handle
+ * @typedef {import('micromark-util-types').CompileContext} CompileContext
  * @typedef {import('../matters.js').Options} Options
  */
 
@@ -38,12 +39,18 @@ export function frontmatterHtml(options) {
 
   return {enter, exit}
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function start() {
     this.buffer()
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function end() {
     this.resume()
     this.setData('slurpOneLineEnding', true)
