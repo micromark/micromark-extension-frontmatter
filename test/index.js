@@ -18,7 +18,7 @@ const customAndYaml = [
 
 test('core', async () => {
   assert.deepEqual(
-    Object.keys(await import('micromark-extension-frontmatter')).sort(),
+    Object.keys(await import('../dev/index.js')).sort(),
     ['frontmatter', 'frontmatterHtml'],
     'should expose the public api'
   )
