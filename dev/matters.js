@@ -3,7 +3,7 @@
  *   Known name of a frontmatter style.
  *
  * @typedef Info
- *   Frontmatter style.
+ *   Sequence.
  *
  *   Depending on how this structure is used, it reflects a marker or a fence.
  * @property {string} open
@@ -16,8 +16,8 @@
  * @property {string} type
  *   Node type to tokenize as.
  * @property {boolean | null | undefined} [anywhere=false]
- *   Whether matter can be found anywhere in the document.
- *   Normally, only matter at the start of the document is recognized.
+ *   Whether matter can be found anywhere in the document, normally, only matter
+ *   at the start of the document is recognized.
  *
  *   > 👉 **Note**: using this is a terrible idea.
  *   > It’s called frontmatter, not matter-in-the-middle or so.

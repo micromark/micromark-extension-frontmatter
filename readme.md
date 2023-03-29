@@ -19,7 +19,10 @@
 *   [API](#api)
     *   [`frontmatter(options?)`](#frontmatteroptions)
     *   [`frontmatterHtml(options?)`](#frontmatterhtmloptions)
+    *   [`Info`](#info)
+    *   [`Matter`](#matter)
     *   [`Options`](#options)
+    *   [`Preset`](#preset)
 *   [Examples](#examples)
 *   [Authoring](#authoring)
 *   [HTML](#html)
@@ -145,6 +148,42 @@ Extension for `micromark` that can be passed in `htmlExtensions`, to support
 frontmatter when serializing to HTML
 ([`HtmlExtension`][micromark-html-extension]).
 
+### `Info`
+
+Sequence (TypeScript type).
+
+Depending on how this structure is used, it reflects a marker or a fence.
+
+###### Fields
+
+*   `open` (`string`)
+    — opening
+*   `close` (`string`)
+    — closing
+
+### `Matter`
+
+Fields describing a kind of matter (TypeScript type).
+
+> 👉 **Note**: using `anywhere` is a terrible idea.
+> It’s called frontmatter, not matter-in-the-middle or so.
+> This makes your markdown less portable.
+
+> 👉 **Note**: `marker` and `fence` are mutually exclusive.
+> If `marker` is set, `fence` must not be set, and vice versa.
+
+###### Fields
+
+*   `type` (`string`)
+    — node type to tokenize as
+*   `marker` (`string` or [`Info`][api-info])
+    — character repeated 3 times, used as complete fences
+*   `fence` (`string` or [`Info`][api-info])
+    — complete fences
+*   `anywhere` (`boolean`, default: `false`)
+    — whether matter can be found anywhere in the document, normally only
+    matter at the start of the document is recognized
+
 ### `Options`
 
 Configuration (TypeScript type).
@@ -153,6 +192,19 @@ Configuration (TypeScript type).
 
 ```ts
 type Options = Matter | Preset | Array<Matter | Preset>
+```
+
+### `Preset`
+
+Known name of a frontmatter style (TypeScript type).
+
+*   `'yaml'` — [`Matter`][api-matter] defined as `{type: 'yaml', marker: '-'}`
+*   `'toml'` — [`Matter`][api-matter] defined as `{type: 'toml', marker: '+'}`
+
+###### Type
+
+```ts
+type Preset = 'toml' | 'yaml'
 ```
 
 ## Examples
@@ -251,7 +303,8 @@ eof (end of file).
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports the additional type [`Options`][api-options].
+It exports the additional types [`Info`][api-info], [`Matter`][api-matter],
+[`Options`][api-options], [`Preset`][api-preset].
 
 ## Compatibility
 
@@ -341,12 +394,18 @@ abide by its terms.
 
 [remark-frontmatter]: https://github.com/remarkjs/remark-frontmatter
 
+[micromark-extension]: https://github.com/micromark/micromark#syntaxextension
+
+[micromark-html-extension]: https://github.com/micromark/micromark#htmlextension
+
 [api-frontmatter]: #frontmatteroptions
 
 [api-frontmatter-html]: #frontmatterhtmloptions
 
+[api-info]: #info
+
+[api-matter]: #matter
+
 [api-options]: #options
 
-[micromark-extension]: https://github.com/micromark/micromark#syntaxextension
-
-[micromark-html-extension]: https://github.com/micromark/micromark#htmlextension
+[api-preset]: #preset
