@@ -16,7 +16,13 @@ const customAndYaml = [
   'yaml'
 ]
 
-test('core', () => {
+test('core', async () => {
+  assert.deepEqual(
+    Object.keys(await import('micromark-extension-frontmatter')).sort(),
+    ['frontmatter', 'frontmatterHtml'],
+    'should expose the public api'
+  )
+
   assert.throws(
     () => {
       // @ts-expect-error: runtime.
