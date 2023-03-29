@@ -8,31 +8,28 @@
 import {matters} from '../matters.js'
 
 /**
- * Add support for turning frontmatter in markdown to HTML.
+ * Create an extension for `micromark` to support frontmatter when serializing
+ * to HTML.
  *
- * Function that can be called to get an HTML extension for micromark (passed
- * in `htmlExtensions`).
+ * > 👉 **Note**: this makes sure nothing is generated in the output HTML for
+ * > frontmatter.
  *
- * This makes sure nothing is generated for frontmatter.
- *
- * Supports YAML by default.
- * Can be configured to support other things.
- *
- * @param {Options} [options='yaml']
- *   Configuration (optional).
+ * @param {Options | null | undefined} [options='yaml']
+ *   Configuration.
  * @returns {HtmlExtension}
- *   HTML extension for micromark (passed in `htmlExtensions`).
+ *   Extension for `micromark` that can be passed in `htmlExtensions`, to
+ *   support frontmatter when serializing to HTML.
  */
 export function frontmatterHtml(options) {
-  const settings = matters(options)
+  const listOfMatters = matters(options)
   /** @type {HtmlExtension['enter']} */
   const enter = {}
   /** @type {HtmlExtension['exit']} */
   const exit = {}
   let index = -1
 
-  while (++index < settings.length) {
-    const type = settings[index].type
+  while (++index < listOfMatters.length) {
+    const type = listOfMatters[index].type
     enter[type] = start
     exit[type] = end
   }

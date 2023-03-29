@@ -17,18 +17,13 @@ import {types} from 'micromark-util-symbol/types.js'
 import {matters} from '../matters.js'
 
 /**
- * `micromark` extension to add support for parsing frontmatter in markdown.
- *
- * Function that can be called to get a syntax extension for micromark (passed
- * in `extensions`).
- *
- * Supports YAML by default.
- * Can be configured to support TOML and more.
+ * Create an extension for `micromark` to enable frontmatter syntax.
  *
  * @param {Options | null | undefined} [options='yaml']
- *   Configuration (optional).
+ *   Configuration.
  * @returns {Extension}
- *   Syntax extension for micromark (passed in `extensions`).
+ *   Extension for `micromark` that can be passed in `extensions`, to
+ *   enable frontmatter syntax.
  */
 export function frontmatter(options) {
   const listOfMatters = matters(options)
