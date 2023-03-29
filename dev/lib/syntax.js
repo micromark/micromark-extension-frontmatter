@@ -1,13 +1,14 @@
 /**
- * @typedef {import('micromark-util-types').Extension} Extension
- * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
  * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
+ * @typedef {import('micromark-util-types').Extension} Extension
  * @typedef {import('micromark-util-types').State} State
- * @typedef {import('../matters.js').Options} Options
- * @typedef {import('../matters.js').Matter} Matter
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ *
  * @typedef {import('../matters.js').Info} Info
+ * @typedef {import('../matters.js').Matter} Matter
+ * @typedef {import('../matters.js').Options} Options
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
@@ -16,7 +17,7 @@ import {types} from 'micromark-util-symbol/types.js'
 import {matters} from '../matters.js'
 
 /**
- * Add support for parsing frontmatter in markdown.
+ * `micromark` extension to add support for parsing frontmatter in markdown.
  *
  * Function that can be called to get a syntax extension for micromark (passed
  * in `extensions`).
@@ -24,25 +25,28 @@ import {matters} from '../matters.js'
  * Supports YAML by default.
  * Can be configured to support TOML and more.
  *
- * @param {Options} [options='yaml']
+ * @param {Options | null | undefined} [options='yaml']
  *   Configuration (optional).
  * @returns {Extension}
  *   Syntax extension for micromark (passed in `extensions`).
  */
 export function frontmatter(options) {
-  const settings = matters(options)
+  const listOfMatters = matters(options)
   /** @type {ConstructRecord} */
   const flow = {}
   let index = -1
 
-  while (++index < settings.length) {
-    const matter = settings[index]
+  while (++index < listOfMatters.length) {
+    const matter = listOfMatters[index]
     const code = fence(matter, 'open').charCodeAt(0)
-    if (code in flow) {
-      // @ts-expect-error it clearly does exist.
-      flow[code].push(parse(matter))
+    const construct = createConstruct(matter)
+    const existing = flow[code]
+
+    if (Array.isArray(existing)) {
+      existing.push(construct)
     } else {
-      flow[code] = [parse(matter)]
+      // Never a single object, always an array.
+      flow[code] = [construct]
     }
   }
 
@@ -53,15 +57,21 @@ export function frontmatter(options) {
  * @param {Matter} matter
  * @returns {Construct}
  */
-function parse(matter) {
-  const name = matter.type
+function createConstruct(matter) {
   const anywhere = matter.anywhere
-  const valueType = name + 'Value'
-  const fenceType = name + 'Fence'
+  const frontmatterType = matter.type
+  const fenceType = frontmatterType + 'Fence'
   const sequenceType = fenceType + 'Sequence'
-  const fenceConstruct = {tokenize: tokenizeFence, partial: true}
-  /** @type {string} */
+  const valueType = frontmatterType + 'Value'
+  const closingFenceConstruct = {tokenize: tokenizeClosingFence, partial: true}
+
+  /**
+   * Fence to look for.
+   *
+   * @type {string}
+   */
   let buffer
+  let bufferIndex = 0
 
   return {tokenize: tokenizeFrontmatter, concrete: true}
 
@@ -74,48 +84,179 @@ function parse(matter) {
 
     return start
 
-    /** @type {State} */
+    /**
+     * Start of frontmatter.
+     *
+     * ```markdown
+     * > | ---
+     *     ^
+     *   | title: "Venus"
+     *   | ---
+     * ```
+     *
+     * @type {State}
+     */
     function start(code) {
       const position = self.now()
 
-      if (position.column !== 1 || (!anywhere && position.line !== 1)) {
-        return nok(code)
+      if (
+        // Indent not allowed.
+        position.column === 1 &&
+        // Normally, only allowed in first line.
+        (position.line === 1 || anywhere)
+      ) {
+        buffer = fence(matter, 'open')
+        bufferIndex = 0
+
+        if (code === buffer.charCodeAt(bufferIndex)) {
+          effects.enter(frontmatterType)
+          effects.enter(fenceType)
+          effects.enter(sequenceType)
+          return openSequence(code)
+        }
       }
 
-      effects.enter(name)
-      buffer = fence(matter, 'open')
-      return effects.attempt(fenceConstruct, afterOpeningFence, nok)(code)
+      return nok(code)
     }
 
-    /** @type {State} */
-    function afterOpeningFence(code) {
-      buffer = fence(matter, 'close')
-      return lineEnd(code)
+    /**
+     * In open sequence.
+     *
+     * ```markdown
+     * > | ---
+     *     ^
+     *   | title: "Venus"
+     *   | ---
+     * ```
+     *
+     * @type {State}
+     */
+    function openSequence(code) {
+      if (bufferIndex === buffer.length) {
+        effects.exit(sequenceType)
+
+        if (markdownSpace(code)) {
+          effects.enter(types.whitespace)
+          return openSequenceWhitespace(code)
+        }
+
+        return openAfter(code)
+      }
+
+      if (code === buffer.charCodeAt(bufferIndex++)) {
+        effects.consume(code)
+        return openSequence
+      }
+
+      return nok(code)
     }
 
-    /** @type {State} */
-    function lineStart(code) {
+    /**
+     * In whitespace after open sequence.
+     *
+     * ```markdown
+     * > | ---␠
+     *        ^
+     *   | title: "Venus"
+     *   | ---
+     * ```
+     *
+     * @type {State}
+     */
+    function openSequenceWhitespace(code) {
+      if (markdownSpace(code)) {
+        effects.consume(code)
+        return openSequenceWhitespace
+      }
+
+      effects.exit(types.whitespace)
+      return openAfter(code)
+    }
+
+    /**
+     * After open sequence.
+     *
+     * ```markdown
+     * > | ---
+     *        ^
+     *   | title: "Venus"
+     *   | ---
+     * ```
+     *
+     * @type {State}
+     */
+    function openAfter(code) {
+      if (markdownLineEnding(code)) {
+        effects.exit(fenceType)
+        effects.enter(types.lineEnding)
+        effects.consume(code)
+        effects.exit(types.lineEnding)
+        // Get ready for closing fence.
+        buffer = fence(matter, 'close')
+        bufferIndex = 0
+        return effects.attempt(closingFenceConstruct, after, contentStart)
+      }
+
+      // EOF is not okay.
+      return nok(code)
+    }
+
+    /**
+     * Start of content chunk.
+     *
+     * ```markdown
+     *   | ---
+     * > | title: "Venus"
+     *     ^
+     *   | ---
+     * ```
+     *
+     * @type {State}
+     */
+    function contentStart(code) {
       if (code === codes.eof || markdownLineEnding(code)) {
-        return lineEnd(code)
+        return contentEnd(code)
       }
 
       effects.enter(valueType)
-      return lineData(code)
+      return contentInside(code)
     }
 
-    /** @type {State} */
-    function lineData(code) {
+    /**
+     * In content chunk.
+     *
+     * ```markdown
+     *   | ---
+     * > | title: "Venus"
+     *     ^
+     *   | ---
+     * ```
+     *
+     * @type {State}
+     */
+    function contentInside(code) {
       if (code === codes.eof || markdownLineEnding(code)) {
         effects.exit(valueType)
-        return lineEnd(code)
+        return contentEnd(code)
       }
 
       effects.consume(code)
-      return lineData
+      return contentInside
     }
 
-    /** @type {State} */
-    function lineEnd(code) {
+    /**
+     * End of content chunk.
+     *
+     * ```markdown
+     *   | ---
+     * > | title: "Venus"
+     *                   ^
+     *   | ---
+     * ```
+     *
+     * @type {State}
+     */
+    function contentEnd(code) {
       // Require a closing fence.
       if (code === codes.eof) {
         return nok(code)
@@ -125,67 +266,123 @@ function parse(matter) {
       effects.enter(types.lineEnding)
       effects.consume(code)
       effects.exit(types.lineEnding)
-      return effects.attempt(fenceConstruct, after, lineStart)
+      return effects.attempt(closingFenceConstruct, after, contentStart)
     }
 
-    /** @type {State} */
+    /**
+     * After frontmatter.
+     *
+     * ```markdown
+     *   | ---
+     *   | title: "Venus"
+     * > | ---
+     *        ^
+     * ```
+     *
+     * @type {State}
+     */
     function after(code) {
-      effects.exit(name)
+      // `code` must be eol/eof.
+      effects.exit(frontmatterType)
       return ok(code)
     }
   }
 
   /** @type {Tokenizer} */
-  function tokenizeFence(effects, ok, nok) {
+  function tokenizeClosingFence(effects, ok, nok) {
     let bufferIndex = 0
 
-    return start
+    return closeStart
 
-    /** @type {State} */
-    function start(code) {
+    /**
+     * Start of close sequence.
+     *
+     * ```markdown
+     *   | ---
+     *   | title: "Venus"
+     * > | ---
+     *     ^
+     * ```
+     *
+     * @type {State}
+     */
+    function closeStart(code) {
       if (code === buffer.charCodeAt(bufferIndex)) {
         effects.enter(fenceType)
         effects.enter(sequenceType)
-        return insideSequence(code)
+        return closeSequence(code)
       }
 
       return nok(code)
     }
 
-    /** @type {State} */
-    function insideSequence(code) {
+    /**
+     * In close sequence.
+     *
+     * ```markdown
+     *   | ---
+     *   | title: "Venus"
+     * > | ---
+     *     ^
+     * ```
+     *
+     * @type {State}
+     */
+    function closeSequence(code) {
       if (bufferIndex === buffer.length) {
         effects.exit(sequenceType)
 
         if (markdownSpace(code)) {
           effects.enter(types.whitespace)
-          return insideWhitespace(code)
+          return closeSequenceWhitespace(code)
         }
 
-        return fenceEnd(code)
+        return closeAfter(code)
       }
 
       if (code === buffer.charCodeAt(bufferIndex++)) {
         effects.consume(code)
-        return insideSequence
+        return closeSequence
       }
 
       return nok(code)
     }
 
-    /** @type {State} */
-    function insideWhitespace(code) {
+    /**
+     * In whitespace after close sequence.
+     *
+     * ```markdown
+     * > | ---
+     *   | title: "Venus"
+     *   | ---␠
+     *        ^
+     * ```
+     *
+     * @type {State}
+     */
+    function closeSequenceWhitespace(code) {
       if (markdownSpace(code)) {
         effects.consume(code)
-        return insideWhitespace
+        return closeSequenceWhitespace
       }
 
       effects.exit(types.whitespace)
-      return fenceEnd(code)
+      return closeAfter(code)
     }
 
-    /** @type {State} */
-    function fenceEnd(code) {
+    /**
+     * After close sequence.
+     *
+     * ```markdown
+     *   | ---
+     *   | title: "Venus"
+     * > | ---
+     *        ^
+     * ```
+     *
+     * @type {State}
+     */
+    function closeAfter(code) {
       if (code === codes.eof || markdownLineEnding(code)) {
         effects.exit(fenceType)
         return ok(code)
@@ -198,7 +395,7 @@ function parse(matter) {
 
 /**
  * @param {Matter} matter
- * @param {'open'|'close'} prop
+ * @param {'open' | 'close'} prop
  * @returns {string}
  */
 function fence(matter, prop) {
@@ -209,8 +406,8 @@ function fence(matter, prop) {
 }
 
 /**
- * @param {Info|string} schema
- * @param {'open'|'close'} prop
+ * @param {Info | string} schema
+ * @param {'open' | 'close'} prop
  * @returns {string}
  */
 function pick(schema, prop) {

@@ -1,46 +1,59 @@
 /**
- * @typedef {'yaml'|'toml'} Preset
- *   Either `'yaml'` or `'toml'`.
+ * @typedef {'toml' | 'yaml'} Preset
+ *   Known name of a frontmatter style.
  *
  * @typedef Info
+ *   Frontmatter style.
+ *
+ *   Depending on how this structure is used, it reflects a marker or a fence.
  * @property {string} open
+ *   Opening.
  * @property {string} close
+ *   Closing.
  *
  * @typedef MatterProps
+ *   Fields of matter.
  * @property {string} type
- *   Type to tokenize as.
+ *   Node type to tokenize as.
  * @property {boolean} [anywhere=false]
- *   If `true`, matter can be found anywhere in the document.
- *   If `false` (default), only matter at the start of the document is
- *   recognized.
+ *   Whether matter can be found anywhere in the document (`boolean`, default:
+ *   `false`).
+ *   Normally, only matter at the start of the document is recognized.
+ *
+ *   > 👉 **Note**: using this is a terrible idea.
+ *   > It’s called frontmatter, not matter-in-the-middle or so.
+ *   > This makes your markdown less portable.
  *
  * @typedef MarkerProps
  *   Marker configuration.
- * @property {string|Info} marker
+ * @property {Info | string} marker
  *   Character used to construct fences.
- *   By providing an object with `open` and `close` different characters can be
- *   used for opening and closing fences.
+ *
+ *   The marker will be repeated.
  *   For example the character `'-'` will result in `'---'` being used as the
  *   fence
+ *   Pass an `Info` interface to specify different characters for opening and
+ *   closing fences.
  * @property {never} [fence]
  *   If `marker` is set, `fence` must not be set.
  *
  * @typedef FenceProps
  *   Fence configuration.
- * @property {string|Info} fence
+ * @property {Info | string} fence
  *   String used as the complete fence.
- *   By providing an object with `open` and `close` different values can be used
- *   for opening and closing fences.
- *   This can be used too if fences contain different characters or lengths
+ *
+ *   This can be used when fences contain different characters or lengths
  *   other than 3.
+ *   Pass an `Info` interface to specify different characters for opening and
+ *   closing fences.
  * @property {never} [marker]
  *   If `fence` is set, `marker` must not be set.
  *
- * @typedef {(MatterProps & FenceProps)|(MatterProps & MarkerProps)} Matter
+ * @typedef {(MatterProps & FenceProps) | (MatterProps & MarkerProps)} Matter
  *   Matter object describing frontmatter.
  *
- * @typedef {Preset|Matter|Array<Preset|Matter>} Options
- *   Matter object or preset, or many.
+ * @typedef {Matter | Preset | Array<Matter | Preset>} Options
+ *   Configuration.
  */
 
 import {fault} from 'fault'
@@ -49,29 +62,39 @@ const own = {}.hasOwnProperty
 const markers = {yaml: '-', toml: '+'}
 
 /**
- * @param {Options} [options='yaml']
+ * Simplify one or more options.
+ *
+ * @param {Options | null | undefined} [options='yaml']
+ *   Configuration.
  * @returns {Array<Matter>}
+ *   List of matters.
  */
-export function matters(options = 'yaml') {
+export function matters(options) {
   /** @type {Array<Matter>} */
-  const results = []
+  const result = []
   let index = -1
 
-  // One preset or matter.
-  if (!Array.isArray(options)) {
-    options = [options]
+  /** @type {Array<Matter | Preset>} */
+  const presetsOrMatters = Array.isArray(options)
+    ? options
+    : options
+    ? [options]
+    : ['yaml']
+
+  while (++index < presetsOrMatters.length) {
+    result[index] = matter(presetsOrMatters[index])
   }
 
-  while (++index < options.length) {
-    results[index] = matter(options[index])
-  }
-
-  return results
+  return result
 }
 
 /**
- * @param {Preset|Matter} option
+ * Simplify an option.
+ *
+ * @param {Matter | Preset} option
+ *   Configuration.
  * @returns {Matter}
+ *   Matters.
  */
 function matter(option) {
   let result = option
