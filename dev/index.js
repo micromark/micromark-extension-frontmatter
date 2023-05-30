@@ -7,3 +7,6 @@
 
 export {frontmatter} from './lib/syntax.js'
 export {frontmatterHtml} from './lib/html.js'
+
+// Note: we don’t have an `index.d.ts` in this extension because all token
+// types are dynamic in JS

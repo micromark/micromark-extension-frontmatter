@@ -1,7 +1,8 @@
 /**
- * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
- * @typedef {import('micromark-util-types').Handle} Handle
  * @typedef {import('micromark-util-types').CompileContext} CompileContext
+ * @typedef {import('micromark-util-types').Handle} Handle
+ * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
+ * @typedef {import('micromark-util-types').TokenType} TokenType
  * @typedef {import('../matters.js').Options} Options
  */
 
@@ -29,7 +30,7 @@ export function frontmatterHtml(options) {
   let index = -1
 
   while (++index < listOfMatters.length) {
-    const type = listOfMatters[index].type
+    const type = /** @type {TokenType} */ (listOfMatters[index].type)
     enter[type] = start
     exit[type] = end
   }

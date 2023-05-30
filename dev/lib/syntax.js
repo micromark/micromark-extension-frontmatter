@@ -3,6 +3,7 @@
  * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
  * @typedef {import('micromark-util-types').Extension} Extension
  * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').TokenType} TokenType
  * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  *
@@ -54,10 +55,10 @@ export function frontmatter(options) {
  */
 function createConstruct(matter) {
   const anywhere = matter.anywhere
-  const frontmatterType = matter.type
-  const fenceType = frontmatterType + 'Fence'
-  const sequenceType = fenceType + 'Sequence'
-  const valueType = frontmatterType + 'Value'
+  const frontmatterType = /** @type {TokenType} */ (matter.type)
+  const fenceType = /** @type {TokenType} */ (frontmatterType + 'Fence')
+  const sequenceType = /** @type {TokenType} */ (fenceType + 'Sequence')
+  const valueType = /** @type {TokenType} */ (frontmatterType + 'Value')
   const closingFenceConstruct = {tokenize: tokenizeClosingFence, partial: true}
 
   /**
