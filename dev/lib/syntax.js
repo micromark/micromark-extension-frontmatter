@@ -13,15 +13,14 @@
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
-import {codes} from 'micromark-util-symbol/codes.js'
-import {types} from 'micromark-util-symbol/types.js'
+import {codes, types} from 'micromark-util-symbol'
 import {matters} from '../matters.js'
 
 /**
  * Create an extension for `micromark` to enable frontmatter syntax.
  *
  * @param {Options | null | undefined} [options='yaml']
- *   Configuration.
+ *   Configuration (default: `'yaml'`).
  * @returns {Extension}
  *   Extension for `micromark` that can be passed in `extensions`, to
  *   enable frontmatter syntax.
