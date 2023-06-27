@@ -205,7 +205,7 @@ Configuration (TypeScript type).
 ###### Type
 
 ```ts
-type Options = Matter | Preset | Array<Matter | Preset>
+type Options = Array<Matter | Preset> | Matter | Preset
 ```
 
 ### `Preset`
@@ -328,7 +328,7 @@ versions of Node.js.
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
 This means we try to keep the current release line,
-`micromark-extension-frontmatter@^1`, compatible with Node.js 12.
+`micromark-extension-frontmatter@^2`, compatible with Node.js 16.
 
 This package works with `micromark` version `3` and later.
 
