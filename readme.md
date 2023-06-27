@@ -63,7 +63,7 @@ internals away.
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 14.14+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-extension-frontmatter
@@ -308,12 +308,15 @@ It exports the additional types [`Info`][api-info], [`Matter`][api-matter],
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 14.14+.
-Our projects sometimes work with older versions, but this is not guaranteed.
 
-These extensions work with `micromark` version 3+.
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line,
+`micromark-extension-frontmatter@^1`, compatible with Node.js 12.
+
+This package works with `micromark` version `3` and later.
 
 ## Security
 
@@ -354,9 +357,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/micromark-extension-frontmatter
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-extension-frontmatter.svg
+[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-extension-frontmatter
 
-[size]: https://bundlephobia.com/result?p=micromark-extension-frontmatter
+[size]: https://bundlejs.com/?q=micromark-extension-frontmatter
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
