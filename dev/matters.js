@@ -6,10 +6,10 @@
  *   Sequence.
  *
  *   Depending on how this structure is used, it reflects a marker or a fence.
- * @property {string} open
- *   Opening.
  * @property {string} close
  *   Closing.
+ * @property {string} open
+ *   Opening.
  *
  * @typedef MatterProps
  *   Fields describing a kind of matter.
@@ -70,7 +70,7 @@ const markers = {yaml: '-', toml: '+'}
  * Simplify one or more options.
  *
  * @param {Options | null | undefined} [options='yaml']
- *   Configuration.
+ *   Configuration (default: `'yaml'`).
  * @returns {Array<Matter>}
  *   List of matters.
  */

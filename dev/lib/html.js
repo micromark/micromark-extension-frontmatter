@@ -16,7 +16,7 @@ import {matters} from '../matters.js'
  * > frontmatter.
  *
  * @param {Options | null | undefined} [options='yaml']
- *   Configuration.
+ *   Configuration (default: `'yaml'`).
  * @returns {HtmlExtension}
  *   Extension for `micromark` that can be passed in `htmlExtensions`, to
  *   support frontmatter when serializing to HTML.

@@ -391,7 +391,7 @@ function createConstruct(matter) {
 
 /**
  * @param {Matter} matter
- * @param {'open' | 'close'} prop
+ * @param {'close' | 'open'} prop
  * @returns {string}
  */
 function fence(matter, prop) {
@@ -403,7 +403,7 @@ function fence(matter, prop) {
 
 /**
  * @param {Info | string} schema
- * @param {'open' | 'close'} prop
+ * @param {'close' | 'open'} prop
  * @returns {string}
  */
 function pick(schema, prop) {
