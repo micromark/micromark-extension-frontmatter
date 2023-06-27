@@ -7,14 +7,14 @@
  * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  *
- * @typedef {import('../matters.js').Info} Info
- * @typedef {import('../matters.js').Matter} Matter
- * @typedef {import('../matters.js').Options} Options
+ * @typedef {import('./to-matters.js').Info} Info
+ * @typedef {import('./to-matters.js').Matter} Matter
+ * @typedef {import('./to-matters.js').Options} Options
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
-import {matters} from '../matters.js'
+import {toMatters} from './to-matters.js'
 
 /**
  * Create an extension for `micromark` to enable frontmatter syntax.
@@ -26,13 +26,13 @@ import {matters} from '../matters.js'
  *   enable frontmatter syntax.
  */
 export function frontmatter(options) {
-  const listOfMatters = matters(options)
+  const matters = toMatters(options)
   /** @type {ConstructRecord} */
   const flow = {}
   let index = -1
 
-  while (++index < listOfMatters.length) {
-    const matter = listOfMatters[index]
+  while (++index < matters.length) {
+    const matter = matters[index]
     const code = fence(matter, 'open').charCodeAt(0)
     const construct = createConstruct(matter)
     const existing = flow[code]

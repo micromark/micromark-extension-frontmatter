@@ -67,14 +67,14 @@ const own = {}.hasOwnProperty
 const markers = {yaml: '-', toml: '+'}
 
 /**
- * Simplify one or more options.
+ * Simplify options by normalizing them to an array of matters.
  *
  * @param {Options | null | undefined} [options='yaml']
  *   Configuration (default: `'yaml'`).
  * @returns {Array<Matter>}
  *   List of matters.
  */
-export function matters(options) {
+export function toMatters(options) {
   /** @type {Array<Matter>} */
   const result = []
   let index = -1
@@ -99,7 +99,7 @@ export function matters(options) {
  * @param {Matter | Preset} option
  *   Configuration.
  * @returns {Matter}
- *   Matters.
+ *   Matter.
  */
 function matter(option) {
   let result = option

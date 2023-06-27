@@ -3,10 +3,10 @@
  * @typedef {import('micromark-util-types').Handle} Handle
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  * @typedef {import('micromark-util-types').TokenType} TokenType
- * @typedef {import('../matters.js').Options} Options
+ * @typedef {import('./to-matters.js').Options} Options
  */
 
-import {matters} from '../matters.js'
+import {toMatters} from './to-matters.js'
 
 /**
  * Create an extension for `micromark` to support frontmatter when serializing
@@ -22,15 +22,15 @@ import {matters} from '../matters.js'
  *   support frontmatter when serializing to HTML.
  */
 export function frontmatterHtml(options) {
-  const listOfMatters = matters(options)
+  const matters = toMatters(options)
   /** @type {HtmlExtension['enter']} */
   const enter = {}
   /** @type {HtmlExtension['exit']} */
   const exit = {}
   let index = -1
 
-  while (++index < listOfMatters.length) {
-    const type = /** @type {TokenType} */ (listOfMatters[index].type)
+  while (++index < matters.length) {
+    const type = /** @type {TokenType} */ (matters[index].type)
     enter[type] = start
     exit[type] = end
   }

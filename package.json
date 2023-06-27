@@ -25,29 +25,15 @@
   ],
   "sideEffects": false,
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts",
   "files": [
     "dev/",
     "lib/",
-    "matters.d.ts",
-    "matters.js",
     "index.d.ts",
     "index.js"
   ],
   "exports": {
-    ".": {
-      "development": "./dev/index.js",
-      "default": "./index.js"
-    },
-    "./matters": {
-      "development": "./dev/matters.js",
-      "default": "./matters.js"
-    },
-    "./matters.js": {
-      "development": "./dev/matters.js",
-      "default": "./matters.js"
-    }
+    "development": "./dev/index.js",
+    "default": "./index.js"
   },
   "dependencies": {
     "fault": "^2.0.0",

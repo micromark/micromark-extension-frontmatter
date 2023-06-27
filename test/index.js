@@ -1,19 +1,17 @@
 /**
- * @typedef {import('../dev/matters.js').Options} Options
+ * @typedef {import('micromark-extension-frontmatter').Options} Options
  */
 
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {micromark} from 'micromark'
-// To do: use export map.
-import {frontmatter, frontmatterHtml} from '../dev/index.js'
+import {frontmatter, frontmatterHtml} from 'micromark-extension-frontmatter'
 
 test('frontmatter', async function (t) {
   await t.test('should expose the public api', async function () {
     assert.deepEqual(
-      // To do: use export map.
-      Object.keys(await import('../dev/index.js')).sort(),
-      ['frontmatter', 'frontmatterHtml']
+      Object.keys(await import('micromark-extension-frontmatter')).sort(),
+      ['frontmatter', 'frontmatterHtml', 'toMatters']
     )
   })
 

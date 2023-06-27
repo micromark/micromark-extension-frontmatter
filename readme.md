@@ -19,6 +19,7 @@
 *   [API](#api)
     *   [`frontmatter(options?)`](#frontmatteroptions)
     *   [`frontmatterHtml(options?)`](#frontmatterhtmloptions)
+    *   [`toMatters(options?)`](#tomattersoptions)
     *   [`Info`](#info)
     *   [`Matter`](#matter)
     *   [`Options`](#options)
@@ -107,8 +108,8 @@ console.log(output)
 
 ## API
 
-This package exports the identifiers [`frontmatter`][api-frontmatter] and
-[`frontmatterHtml`][api-frontmatter-html].
+This package exports the identifiers [`frontmatter`][api-frontmatter],
+[`frontmatterHtml`][api-frontmatter-html], and [`toMatters`][api-to-matters].
 There is no default export.
 
 The export map supports the [`development` condition][development].
@@ -147,6 +148,19 @@ HTML.
 Extension for `micromark` that can be passed in `htmlExtensions`, to support
 frontmatter when serializing to HTML
 ([`HtmlExtension`][micromark-html-extension]).
+
+### `toMatters(options?)`
+
+Simplify options by normalizing them to an array of matters.
+
+###### Parameters
+
+*   `options` ([`Options`][api-options], default: `['yaml']`)
+    — configuration
+
+###### Returns
+
+List of matters ([`Array<Matter>`][api-matter]).
 
 ### `Info`
 
@@ -404,6 +418,8 @@ abide by its terms.
 [api-frontmatter]: #frontmatteroptions
 
 [api-frontmatter-html]: #frontmatterhtmloptions
+
+[api-to-matters]: #tomattersoptions
 
 [api-info]: #info
 
