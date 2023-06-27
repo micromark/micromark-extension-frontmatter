@@ -73,14 +73,14 @@ npm install micromark-extension-frontmatter
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {frontmatter, frontmatterHtml} from 'https://esm.sh/micromark-extension-frontmatter@1'
+import {frontmatter, frontmatterHtml} from 'https://esm.sh/micromark-extension-frontmatter@2'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {frontmatter, frontmatterHtml} from 'https://esm.sh/micromark-extension-frontmatter@1?bundle'
+  import {frontmatter, frontmatterHtml} from 'https://esm.sh/micromark-extension-frontmatter@2?bundle'
 </script>
 ```
 
