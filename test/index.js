@@ -1,5 +1,5 @@
 /**
- * @typedef {import('micromark-extension-frontmatter').Options} Options
+ * @import {Options} from 'micromark-extension-frontmatter'
  */
 
 import assert from 'node:assert/strict'

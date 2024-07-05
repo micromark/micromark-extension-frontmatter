@@ -1,9 +1,6 @@
 /**
- * @typedef {import('micromark-util-types').CompileContext} CompileContext
- * @typedef {import('micromark-util-types').Handle} Handle
- * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
- * @typedef {import('micromark-util-types').TokenType} TokenType
- * @typedef {import('./to-matters.js').Options} Options
+ * @import {Options} from 'micromark-extension-frontmatter'
+ * @import {CompileContext, Handle, HtmlExtension, TokenType} from 'micromark-util-types'
  */
 
 import {toMatters} from './to-matters.js'

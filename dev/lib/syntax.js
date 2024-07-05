@@ -1,15 +1,6 @@
 /**
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
- * @typedef {import('micromark-util-types').Extension} Extension
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenType} TokenType
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- *
- * @typedef {import('./to-matters.js').Info} Info
- * @typedef {import('./to-matters.js').Matter} Matter
- * @typedef {import('./to-matters.js').Options} Options
+ * @import {Info, Matter, Options} from 'micromark-extension-frontmatter'
+ * @import {Construct, ConstructRecord, Extension, State, TokenType, TokenizeContext, Tokenizer} from 'micromark-util-types'
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
