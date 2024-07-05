@@ -390,21 +390,21 @@ function createConstruct(matter) {
 
 /**
  * @param {Matter} matter
- * @param {'close' | 'open'} prop
+ * @param {'close' | 'open'} field
  * @returns {string}
  */
-function fence(matter, prop) {
+function fence(matter, field) {
   return matter.marker
-    ? pick(matter.marker, prop).repeat(3)
+    ? pick(matter.marker, field).repeat(3)
     : // @ts-expect-error: They’re mutually exclusive.
-      pick(matter.fence, prop)
+      pick(matter.fence, field)
 }
 
 /**
  * @param {Info | string} schema
- * @param {'close' | 'open'} prop
+ * @param {'close' | 'open'} field
  * @returns {string}
  */
-function pick(schema, prop) {
-  return typeof schema === 'string' ? schema : schema[prop]
+function pick(schema, field) {
+  return typeof schema === 'string' ? schema : schema[field]
 }

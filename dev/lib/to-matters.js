@@ -83,8 +83,8 @@ export function toMatters(options) {
   const presetsOrMatters = Array.isArray(options)
     ? options
     : options
-    ? [options]
-    : ['yaml']
+      ? [options]
+      : ['yaml']
 
   while (++index < presetsOrMatters.length) {
     result[index] = matter(presetsOrMatters[index])

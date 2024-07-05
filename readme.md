@@ -12,29 +12,29 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When to use this](#when-to-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`frontmatter(options?)`](#frontmatteroptions)
-    *   [`frontmatterHtml(options?)`](#frontmatterhtmloptions)
-    *   [`toMatters(options?)`](#tomattersoptions)
-    *   [`Info`](#info)
-    *   [`Matter`](#matter)
-    *   [`Options`](#options)
-    *   [`Preset`](#preset)
-*   [Examples](#examples)
-*   [Authoring](#authoring)
-*   [HTML](#html)
-*   [CSS](#css)
-*   [Syntax](#syntax)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When to use this](#when-to-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`frontmatter(options?)`](#frontmatteroptions)
+  * [`frontmatterHtml(options?)`](#frontmatterhtmloptions)
+  * [`toMatters(options?)`](#tomattersoptions)
+  * [`Info`](#info)
+  * [`Matter`](#matter)
+  * [`Options`](#options)
+  * [`Preset`](#preset)
+* [Examples](#examples)
+* [Authoring](#authoring)
+* [HTML](#html)
+* [CSS](#css)
+* [Syntax](#syntax)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -122,8 +122,8 @@ Create an extension for [`micromark`][micromark] to enable frontmatter syntax.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], default: `['yaml']`)
-    — configuration
+* `options` ([`Options`][api-options], default: `['yaml']`)
+  — configuration
 
 ###### Returns
 
@@ -140,8 +140,8 @@ HTML.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], default: `['yaml']`)
-    — configuration
+* `options` ([`Options`][api-options], default: `['yaml']`)
+  — configuration
 
 ###### Returns
 
@@ -155,8 +155,8 @@ Simplify options by normalizing them to an array of matters.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], default: `['yaml']`)
-    — configuration
+* `options` ([`Options`][api-options], default: `['yaml']`)
+  — configuration
 
 ###### Returns
 
@@ -170,10 +170,10 @@ Depending on how this structure is used, it reflects a marker or a fence.
 
 ###### Fields
 
-*   `open` (`string`)
-    — opening
-*   `close` (`string`)
-    — closing
+* `open` (`string`)
+  — opening
+* `close` (`string`)
+  — closing
 
 ### `Matter`
 
@@ -188,15 +188,15 @@ Fields describing a kind of matter (TypeScript type).
 
 ###### Fields
 
-*   `type` (`string`)
-    — node type to tokenize as
-*   `marker` (`string` or [`Info`][api-info])
-    — character repeated 3 times, used as complete fences
-*   `fence` (`string` or [`Info`][api-info])
-    — complete fences
-*   `anywhere` (`boolean`, default: `false`)
-    — whether matter can be found anywhere in the document, normally only
-    matter at the start of the document is recognized
+* `type` (`string`)
+  — node type to tokenize as
+* `marker` (`string` or [`Info`][api-info])
+  — character repeated 3 times, used as complete fences
+* `fence` (`string` or [`Info`][api-info])
+  — complete fences
+* `anywhere` (`boolean`, default: `false`)
+  — whether matter can be found anywhere in the document, normally only
+  matter at the start of the document is recognized
 
 ### `Options`
 
@@ -212,8 +212,8 @@ type Options = Array<Matter | Preset> | Matter | Preset
 
 Known name of a frontmatter style (TypeScript type).
 
-*   `'yaml'` — [`Matter`][api-matter] defined as `{type: 'yaml', marker: '-'}`
-*   `'toml'` — [`Matter`][api-matter] defined as `{type: 'toml', marker: '+'}`
+* `'yaml'` — [`Matter`][api-matter] defined as `{type: 'yaml', marker: '-'}`
+* `'toml'` — [`Matter`][api-matter] defined as `{type: 'toml', marker: '+'}`
 
 ###### Type
 
@@ -338,10 +338,10 @@ This package is safe.
 
 ## Related
 
-*   [`remark-frontmatter`][remark-frontmatter]
-    — remark plugin using this to support frontmatter
-*   [`mdast-util-frontmatter`][mdast-util-frontmatter]
-    — mdast utility to support frontmatter
+* [`remark-frontmatter`][remark-frontmatter]
+  — remark plugin using this to support frontmatter
+* [`mdast-util-frontmatter`][mdast-util-frontmatter]
+  — mdast utility to support frontmatter
 
 ## Contribute
 
