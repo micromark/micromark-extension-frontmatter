@@ -292,19 +292,20 @@ This package does not relate to CSS.
 
 Frontmatter forms with the following BNF:
 
-```bnf
-frontmatter ::= fence_open *( eol *line ) eol fence_close
-fence_open ::= sequence_open *space_or_tab
-fence_close ::= sequence_close *space_or_tab
+```abnf
+frontmatter ::= fenceOpen *( eol *line ) eol fenceClose
+fenceOpen ::= sequenceOpen *spaceOrTab
+fenceClose ::= sequenceClose *spaceOrTab
 ; Note: options can define custom sequences.
-sequence_open ::= 3'+' | 3'-'
+sequenceOpen ::= 3"+" / 3"-"
 ; Note: options can define custom sequences.
-; Restriction: `sequence_close` must correspond to `sequence_open`.
-sequence_close ::= 3'+' | 3'-'
+; Restriction: `sequenceClose` must correspond to `sequenceOpen`.
+sequenceClose ::= 3"+" / 3"-"
 
 ; Character groups for informational purposes.
-byte ::= 0x00..=0xFFFF
-eol ::= '\n' | '\r' | '\r\n'
+byte ::= %x00-FFFF
+spaceOrTab ::= "\t" / " "
+eol ::= "\n" / "\r" / "\r\n"
 line ::= byte - eol
 ```
 
