@@ -1,14 +1,12 @@
 # micromark-extension-frontmatter
 
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][size-badge]][size]
-[![Sponsors][sponsors-badge]][collective]
-[![Backers][backers-badge]][collective]
-[![Chat][chat-badge]][chat]
+[![Build][badge-build-image]][badge-build-url]
+[![Coverage][badge-coverage-image]][badge-coverage-url]
+[![Downloads][badge-downloads-image]][badge-downloads-url]
+[![Size][badge-size-image]][badge-size-url]
 
-[micromark][] extensions to support frontmatter (YAML, TOML, and more).
+[micromark][github-micromark] extensions to support frontmatter
+(YAML, TOML, and more).
 
 ## Contents
 
@@ -39,7 +37,7 @@
 ## What is this?
 
 This package contains two extensions that add support for frontmatter syntax
-as often used in markdown to [`micromark`][micromark].
+as often used in markdown to [`micromark`][github-micromark].
 
 Frontmatter is a metadata format in front of the content.
 It’s typically written in YAML and is often used with markdown.
@@ -51,20 +49,20 @@ It can also parse TOML frontmatter, just like YAML except that it uses a `+`.
 
 ## When to use this
 
-You can use these extensions when you are working with [`micromark`][micromark]
-already.
+You can use these extensions when you are working with
+[`micromark`][github-micromark] already.
 
 When you need a syntax tree, you can combine this package with
-[`mdast-util-frontmatter`][mdast-util-frontmatter].
+[`mdast-util-frontmatter`][github-mdast-util-frontmatter].
 
-All these packages are used [`remark-frontmatter`][remark-frontmatter], which
-focusses on making it easier to transform content by abstracting these
+All these packages are used [`remark-frontmatter`][github-remark-frontmatter],
+which focusses on making it easier to transform content by abstracting these
 internals away.
 
 ## Install
 
-This package is [ESM only][esm].
-In Node.js (version 16+), install with [npm][]:
+This package is [ESM only][github-gist-esm].
+In Node.js (version 16+), install with [npm][npmjs-install]:
 
 ```sh
 npm install micromark-extension-frontmatter
@@ -112,13 +110,15 @@ This package exports the identifiers [`frontmatter`][api-frontmatter],
 [`frontmatterHtml`][api-frontmatter-html], and [`toMatters`][api-to-matters].
 There is no default export.
 
-The export map supports the [`development` condition][development].
+The export map supports the
+[`development` condition][nodejs-condition-development].
 Run `node --conditions development module.js` to get instrumented dev code.
 Without this condition, production code is loaded.
 
 ### `frontmatter(options?)`
 
-Create an extension for [`micromark`][micromark] to enable frontmatter syntax.
+Create an extension for [`micromark`][github-micromark]
+to enable frontmatter syntax.
 
 ###### Parameters
 
@@ -128,7 +128,7 @@ Create an extension for [`micromark`][micromark] to enable frontmatter syntax.
 ###### Returns
 
 Extension for `micromark` that can be passed in `extensions`, to enable
-frontmatter syntax ([`Extension`][micromark-extension]).
+frontmatter syntax ([`Extension`][github-micromark-extension]).
 
 ### `frontmatterHtml(options?)`
 
@@ -147,7 +147,7 @@ HTML.
 
 Extension for `micromark` that can be passed in `htmlExtensions`, to support
 frontmatter when serializing to HTML
-([`HtmlExtension`][micromark-html-extension]).
+([`HtmlExtension`][github-micromark-html-extension]).
 
 ### `toMatters(options?)`
 
@@ -339,88 +339,30 @@ This package is safe.
 
 ## Related
 
-* [`remark-frontmatter`][remark-frontmatter]
+* [`remark-frontmatter`][github-remark-frontmatter]
   — remark plugin using this to support frontmatter
-* [`mdast-util-frontmatter`][mdast-util-frontmatter]
+* [`mdast-util-frontmatter`][github-mdast-util-frontmatter]
   — mdast utility to support frontmatter
 
 ## Contribute
 
-See [`contributing.md` in `micromark/.github`][contributing] for ways to get
-started.
-See [`support.md`][support] for ways to get help.
+See [`contributing.md` in `micromark/.github`][health-contributing]
+for ways to get started.
+See [`support.md`][health-support] for ways to get help.
 
-This project has a [code of conduct][coc].
+This project has a [code of conduct][health-coc].
 By interacting with this repository, organization, or community you agree to
 abide by its terms.
 
 ## License
 
-[MIT][license] © [Titus Wormer][author]
+[MIT][file-license] © [Titus Wormer][wooorm]
 
 <!-- Definitions -->
-
-[build-badge]: https://github.com/micromark/micromark-extension-frontmatter/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark-extension-frontmatter/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark-extension-frontmatter.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark-extension-frontmatter
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-extension-frontmatter.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-extension-frontmatter
-
-[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-extension-frontmatter
-
-[size]: https://bundlejs.com/?q=micromark-extension-frontmatter
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[collective]: https://opencollective.com/unified
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[esmsh]: https://esm.sh
-
-[license]: license
-
-[author]: https://wooorm.com
-
-[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/main/support.md
-
-[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
-
-[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-
-[typescript]: https://www.typescriptlang.org
-
-[development]: https://nodejs.org/api/packages.html#packages_resolving_user_conditions
-
-[micromark]: https://github.com/micromark/micromark
-
-[mdast-util-frontmatter]: https://github.com/syntax-tree/mdast-util-frontmatter
-
-[remark-frontmatter]: https://github.com/remarkjs/remark-frontmatter
-
-[micromark-extension]: https://github.com/micromark/micromark#syntaxextension
-
-[micromark-html-extension]: https://github.com/micromark/micromark#htmlextension
 
 [api-frontmatter]: #frontmatteroptions
 
 [api-frontmatter-html]: #frontmatterhtmloptions
-
-[api-to-matters]: #tomattersoptions
 
 [api-info]: #info
 
@@ -429,3 +371,51 @@ abide by its terms.
 [api-options]: #options
 
 [api-preset]: #preset
+
+[api-to-matters]: #tomattersoptions
+
+[badge-build-image]: https://github.com/micromark/micromark-extension-frontmatter/workflows/main/badge.svg
+
+[badge-build-url]: https://github.com/micromark/micromark-extension-frontmatter/actions
+
+[badge-coverage-image]: https://img.shields.io/codecov/c/github/micromark/micromark-extension-frontmatter.svg
+
+[badge-coverage-url]: https://codecov.io/github/micromark/micromark-extension-frontmatter
+
+[badge-downloads-image]: https://img.shields.io/npm/dm/micromark-extension-frontmatter.svg
+
+[badge-downloads-url]: https://www.npmjs.com/package/micromark-extension-frontmatter
+
+[badge-size-image]: https://img.shields.io/bundlejs/size/micromark-extension-frontmatter
+
+[badge-size-url]: https://bundlejs.com/?q=micromark-extension-frontmatter
+
+[esmsh]: https://esm.sh
+
+[file-license]: license
+
+[github-gist-esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[github-mdast-util-frontmatter]: https://github.com/syntax-tree/mdast-util-frontmatter
+
+[github-micromark]: https://github.com/micromark/micromark
+
+[github-micromark-extension]: https://github.com/micromark/micromark#syntaxextension
+
+[github-micromark-html-extension]: https://github.com/micromark/micromark#htmlextension
+
+[github-remark-frontmatter]: https://github.com/remarkjs/remark-frontmatter
+
+[health-coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[health-contributing]: https://github.com/micromark/.github/blob/main/contributing.md
+
+[health-support]: https://github.com/micromark/.github/blob/main/support.md
+
+[nodejs-condition-development]: https://nodejs.org/api/packages.html#packages_resolving_user_conditions
+
+[npmjs-install]: https://docs.npmjs.com/cli/install
+
+[typescript]: https://www.typescriptlang.org
+
+[wooorm]: https://wooorm.com
