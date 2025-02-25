@@ -1,46 +1,16 @@
 {
-  "name": "micromark-extension-frontmatter",
-  "version": "2.0.0",
-  "description": "micromark extension to support frontmatter (YAML, TOML, etc)",
-  "license": "MIT",
-  "keywords": [
-    "micromark",
-    "micromark-extension",
-    "frontmatter",
-    "yaml",
-    "toml",
-    "gfm",
-    "markdown",
-    "unified"
-  ],
-  "repository": "micromark/micromark-extension-frontmatter",
-  "bugs": "https://github.com/micromark/micromark-extension-frontmatter/issues",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/unified"
-  },
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "bugs": "https://github.com/micromark/micromark-extension-frontmatter/issues",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
-  "sideEffects": false,
-  "type": "module",
-  "files": [
-    "dev/",
-    "lib/",
-    "index.d.ts",
-    "index.js"
-  ],
-  "exports": {
-    "development": "./dev/index.js",
-    "default": "./index.js"
-  },
   "dependencies": {
     "fault": "^2.0.0",
     "micromark-util-character": "^2.0.0",
     "micromark-util-symbol": "^2.0.0",
     "micromark-util-types": "^2.0.0"
   },
+  "description": "micromark extension to support frontmatter (YAML, TOML, etc)",
   "devDependencies": {
     "@types/node": "^22.0.0",
     "c8": "^10.0.0",
@@ -53,16 +23,32 @@
     "typescript": "^5.0.0",
     "xo": "^0.60.0"
   },
-  "scripts": {
-    "prepack": "npm run build && npm run format",
-    "build": "tsc --build --clean && tsc --build && type-coverage && micromark-build",
-    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
-    "test-api-dev": "node --conditions development test/index.js",
-    "test-api-prod": "node --conditions production test/index.js",
-    "test-api": "npm run test-api-dev && npm run test-api-prod",
-    "test-coverage": "c8 --100 --reporter lcov npm run test-api",
-    "test": "npm run build && npm run format && npm run test-coverage"
+  "exports": {
+    "development": "./dev/index.js",
+    "default": "./index.js"
   },
+  "files": [
+    "dev/",
+    "index.d.ts",
+    "index.js",
+    "lib/"
+  ],
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/unified"
+  },
+  "keywords": [
+    "frontmatter",
+    "gfm",
+    "markdown",
+    "micromark-extension",
+    "micromark",
+    "toml",
+    "unified",
+    "yaml"
+  ],
+  "license": "MIT",
+  "name": "micromark-extension-frontmatter",
   "prettier": {
     "bracketSpacing": false,
     "semi": false,
@@ -76,12 +62,23 @@
       "remark-preset-wooorm"
     ]
   },
+  "repository": "micromark/micromark-extension-frontmatter",
+  "scripts": {
+    "build": "tsc --build --clean && tsc --build && type-coverage && micromark-build",
+    "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+    "test-api-dev": "node --conditions development test/index.js",
+    "test-api-prod": "node --conditions production test/index.js",
+    "test-api": "npm run test-api-dev && npm run test-api-prod",
+    "test-coverage": "c8 --100 --reporter lcov -- npm run test-api",
+    "test": "npm run build && npm run format && npm run test-coverage"
+  },
+  "sideEffects": false,
   "typeCoverage": {
     "atLeast": 100,
-    "detail": true,
-    "ignoreCatch": true,
     "strict": true
   },
+  "type": "module",
+  "version": "2.0.0",
   "xo": {
     "overrides": [
       {
