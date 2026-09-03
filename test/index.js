@@ -346,6 +346,64 @@ test('frontmatter', async function (t) {
   })
 
   await t.test(
+    'should still detect lists after unclosed frontmatter',
+    async function () {
+      assert.deepEqual(
+        micromark('---\ntitle: a\n\n* b', {
+          extensions: [frontmatter()],
+          htmlExtensions: [frontmatterHtml()]
+        }),
+        '<hr />\n<p>title: a</p>\n<ul>\n<li>b</li>\n</ul>'
+      )
+    }
+  )
+
+  await t.test(
+    'should still detect block quotes after unclosed frontmatter',
+    async function () {
+      assert.deepEqual(
+        micromark('---\ntitle: a\n\n> b', {
+          extensions: [frontmatter()],
+          htmlExtensions: [frontmatterHtml()]
+        }),
+        '<hr />\n<p>title: a</p>\n<blockquote>\n<p>b</p>\n</blockquote>'
+      )
+    }
+  )
+
+  await t.test(
+    'should still detect lists after closed yaml when a pandoc fence is also enabled',
+    async function () {
+      /** @type {Options} */
+      const yamlAndPandoc = [
+        {type: 'yaml', fence: {open: '---', close: '...'}},
+        {type: 'yaml', fence: {open: '---', close: '---'}}
+      ]
+
+      assert.deepEqual(
+        micromark('---\ntitle: a\n---\n\n* b', {
+          extensions: [frontmatter(yamlAndPandoc)],
+          htmlExtensions: [frontmatterHtml(yamlAndPandoc)]
+        }),
+        '<ul>\n<li>b</li>\n</ul>'
+      )
+    }
+  )
+
+  await t.test(
+    'should keep list-like yaml lines inside closed frontmatter',
+    async function () {
+      assert.deepEqual(
+        micromark('---\ntags:\n- a\n- b\n---\n\n* c', {
+          extensions: [frontmatter()],
+          htmlExtensions: [frontmatterHtml()]
+        }),
+        '<ul>\n<li>c</li>\n</ul>'
+      )
+    }
+  )
+
+  await t.test(
     'should not support frontmatter in a container (list)',
     async function () {
       assert.deepEqual(

@@ -1,6 +1,6 @@
 /**
  * @import {Info, Matter, Options} from 'micromark-extension-frontmatter'
- * @import {Construct, ConstructRecord, Extension, State, TokenType, TokenizeContext, Tokenizer} from 'micromark-util-types'
+ * @import {Construct, ConstructRecord, Exiter, Extension, State, TokenType, TokenizeContext, Tokenizer} from 'micromark-util-types'
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
@@ -19,24 +19,26 @@ import {toMatters} from './to-matters.js'
 export function frontmatter(options) {
   const matters = toMatters(options)
   /** @type {ConstructRecord} */
-  const flow = {}
+  const document = {}
   let index = -1
 
   while (++index < matters.length) {
     const matter = matters[index]
     const code = fence(matter, 'open').charCodeAt(0)
     const construct = createConstruct(matter)
-    const existing = flow[code]
+    const existing = document[code]
 
     if (Array.isArray(existing)) {
       existing.push(construct)
     } else {
       // Never a single object, always an array.
-      flow[code] = [construct]
+      document[code] = [construct]
     }
   }
 
-  return {flow}
+  // Document-level so an unclosed attempt can `nok` before later lines skip
+  // container checks (lists, block quotes) as they would for concrete flow.
+  return {document}
 }
 
 /**
@@ -59,7 +61,11 @@ function createConstruct(matter) {
   let buffer
   let bufferIndex = 0
 
-  return {tokenize: tokenizeFrontmatter, concrete: true}
+  return {
+    continuation: {tokenize: tokenizeNever},
+    exit: exitFrontmatter,
+    tokenize: tokenizeFrontmatter
+  }
 
   /**
    * @this {TokenizeContext}
@@ -378,6 +384,18 @@ function createConstruct(matter) {
     }
   }
 }
+
+/**
+ * Frontmatter is fully parsed in `tokenize`.
+ *
+ * @type {Tokenizer}
+ */
+function tokenizeNever(effects, ok, nok) {
+  return nok
+}
+
+/** @type {Exiter} */
+function exitFrontmatter() {}
 
 /**
  * @param {Matter} matter
