@@ -117,3 +117,7 @@ export type FrontmatterTokenTypeMap<MarkerType extends string> = {
       | `${MarkerType}Value`
   ]: [TokenType]
 }
+
+declare module 'micromark-util-types' {
+  interface TokenTypeMap extends FrontmatterTokenTypeMap<Preset> {}
+}
