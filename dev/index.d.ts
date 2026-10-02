@@ -86,8 +86,7 @@ interface MatterFields {
  * > If `marker` is set, `fence` must not be set, and vice versa.
  */
 export type Matter =
-  | (MatterFields & FenceFields)
-  | (MatterFields & MarkerFields)
+  (MatterFields & FenceFields) | (MatterFields & MarkerFields)
 
 /**
  * Configuration.
