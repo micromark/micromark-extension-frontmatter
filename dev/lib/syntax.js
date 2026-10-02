@@ -1,6 +1,6 @@
 /**
- * @import {Info, Matter, Options} from 'micromark-extension-frontmatter'
- * @import {Construct, ConstructRecord, Extension, State, TokenType, TokenizeContext, Tokenizer} from 'micromark-util-types'
+ * @import {Info, Matter, Options, Preset} from 'micromark-extension-frontmatter'
+ * @import {Construct, ConstructRecord, Extension, State, TokenizeContext, Tokenizer} from 'micromark-util-types'
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
@@ -45,10 +45,10 @@ export function frontmatter(options) {
  */
 function createConstruct(matter) {
   const anywhere = matter.anywhere
-  const frontmatterType = /** @type {TokenType} */ (matter.type)
-  const fenceType = /** @type {TokenType} */ (frontmatterType + 'Fence')
-  const sequenceType = /** @type {TokenType} */ (fenceType + 'Sequence')
-  const valueType = /** @type {TokenType} */ (frontmatterType + 'Value')
+  const frontmatterType = /** @type {Preset} */ (matter.type)
+  const fenceType = /** @type {const} */ (`${frontmatterType}Fence`)
+  const sequenceType = /** @type {const} */ (`${fenceType}Sequence`)
+  const valueType = /** @type {const} */ (`${frontmatterType}Value`)
   const closingFenceConstruct = {tokenize: tokenizeClosingFence, partial: true}
 
   /**

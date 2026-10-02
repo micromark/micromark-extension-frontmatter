@@ -86,8 +86,7 @@ interface MatterFields {
  * > If `marker` is set, `fence` must not be set, and vice versa.
  */
 export type Matter =
-  | (MatterFields & FenceFields)
-  | (MatterFields & MarkerFields)
+  (MatterFields & FenceFields) | (MatterFields & MarkerFields)
 
 /**
  * Configuration.
@@ -98,3 +97,27 @@ export type Options = Matter | Preset | Array<Matter | Preset>
  * Known name of a frontmatter style.
  */
 export type Preset = 'toml' | 'yaml'
+
+/**
+ * A token type map extension for a given marker type.
+ *
+ * @example
+ * ```ts
+ * declare module 'micromark-util-types' {
+ *   interface TokenTypeMap extends FrontmatterTokenTypeMap<'json'> {}
+ * }
+ * ```
+ */
+export type FrontmatterTokenTypeMap<MarkerType extends string> = {
+  [
+    TokenType in
+      | MarkerType
+      | `${MarkerType}Fence`
+      | `${MarkerType}FenceSequence`
+      | `${MarkerType}Value`
+  ]: [TokenType]
+}
+
+declare module 'micromark-util-types' {
+  interface TokenTypeMap extends FrontmatterTokenTypeMap<Preset> {}
+}
